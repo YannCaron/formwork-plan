@@ -30,10 +30,11 @@ function calculateRec(ctx: Context): boolean {
 
     const primaries = Object.values(PRIMARIES).reverse()
     for (const primary of primaries) {
-        if (ctx.forms.size + primary.size + PropBorder.SIZE >= ctx.goal - ctx.tolerance)
-            ctx.forms.add(primary).add(new PropBorder())
-        else
-            ctx.forms.add(primary).add(new PropInter())
+        ctx.forms.add(primary)
+        ctx.forms.add(ctx.forms.simulateSize(new PropBorder()) >= ctx.goal - ctx.tolerance ?
+            new PropBorder() :
+            new PropInter()
+        )
 
         const res = calculateRec(ctx)
         if (res) return res

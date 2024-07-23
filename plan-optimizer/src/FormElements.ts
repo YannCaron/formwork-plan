@@ -13,6 +13,13 @@ export default class FormElements extends FormElement {
         this._elements = new Array<FormElement>()
     }
 
+    simulateSize(...elements: Array<FormElement>) {
+        return this.size + elements
+            .map(e => e.size)
+            .reduce((acc, e) => acc + e)
+
+    }
+
     add(element: FormElement) {
         this._elements.push(element)
         return this
