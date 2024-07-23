@@ -1,5 +1,5 @@
 import FormElements from "./src/FormElements";
-import Pointelle from "./src/Pointelle";
+import Prop from "./src/Prop";
 import PRIMARIES from "./src/Primary";
 
 class Context {
@@ -28,7 +28,7 @@ function calculateRec(ctx: Context): boolean {
 
     const primaries = Object.values(PRIMARIES).reverse()
     for (const primary of primaries) {
-        ctx.forms.add(primary).add(new Pointelle())
+        ctx.forms.add(primary).add(new Prop())
         const res = calculateRec(ctx)
         if (res) return res
         ctx.forms.remove().remove()
@@ -39,7 +39,7 @@ function calculateRec(ctx: Context): boolean {
 }
 
 function calculate(goal: number, tolerance: number) {
-    const forms = new FormElements().add(new Pointelle())
+    const forms = new FormElements().add(new Prop())
     const ctx = new Context(forms, goal, tolerance)
 
     const res = calculateRec(ctx)

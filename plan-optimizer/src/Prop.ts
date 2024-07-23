@@ -1,11 +1,11 @@
 import FormElement from "./FormElement"
 
-export default class Pointelle extends FormElement {
+export default class Prop extends FormElement {
 
     static SIZE = 12
 
     get size() {
-        return Pointelle.SIZE
+        return Prop.SIZE
     }
 
     toString(): string {
