@@ -52,6 +52,6 @@ function calculate(goal: number, tolerance: number) {
     }
 }
 
-for (let g = 500; g <= 1500; g += 1 /*randomInt(50)*/) {
-    calculate(g, 15)
+for (let g = 500; g <= 1500; g += randomInt(50)) {
+    calculate(g, 5)
 }
