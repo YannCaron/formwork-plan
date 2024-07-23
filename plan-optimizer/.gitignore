@@ -1,0 +1,11 @@
+# node-js
+node_modules
+
+# typescript
+dist
+
+# vscode
+.history
+
+# jest
+coverage
