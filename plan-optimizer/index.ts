@@ -1,3 +1,4 @@
+import { randomInt } from "crypto";
 import FormElements from "./src/FormElements";
 import Prop from "./src/Prop";
 import PRIMARIES from "./src/Primary";
@@ -50,6 +51,7 @@ function calculate(goal: number, tolerance: number) {
         console.log('NOT FOUND !', ctx.forms.toString())
     }
 }
-for (let g = 500; g <= 1500; g++) {
-    calculate(g, 5)
+
+for (let g = 500; g <= 1500; g += 1 /*randomInt(50)*/) {
+    calculate(g, 15)
 }
