@@ -16,7 +16,7 @@ class Context {
     }
 
     toString() {
-        return `approximate: ${this.goal}, found: ${this.forms.size}, with tolerance: ${this.tolerance}, number of calcucations: ${this.calculationCount}, found topology: ${this.forms.toString()}`
+        return `goal: ${this.goal}, found: ${this.forms.size}, difference: ${this.goal - this.forms.size}, tolerance: ${this.tolerance}, iteration: ${this.calculationCount}, topology: ${this.forms.toString()}`
     }
 }
 
