@@ -1,7 +1,8 @@
 import { randomInt } from "crypto";
 import FormElements from "./src/FormElements";
-import Prop from "./src/Prop";
+import PropBorder from "./src/PropBorder";
 import PRIMARIES from "./src/Primary";
+import PropInter from "./src/PropInter";
 
 class Context {
     forms: FormElements
@@ -24,12 +25,16 @@ class Context {
 function calculateRec(ctx: Context): boolean {
     ctx.calculationCount++
 
-    if (ctx.forms.size > ctx.goal - ctx.tolerance && ctx.forms.size <= ctx.goal) return true
+    if (ctx.forms.size >= ctx.goal - ctx.tolerance && ctx.forms.size <= ctx.goal) return true
     else if (ctx.forms.size > ctx.goal) return false
 
     const primaries = Object.values(PRIMARIES).reverse()
     for (const primary of primaries) {
-        ctx.forms.add(primary).add(new Prop())
+        if (ctx.forms.size + primary.size + PropBorder.SIZE >= ctx.goal - ctx.tolerance)
+            ctx.forms.add(primary).add(new PropBorder())
+        else
+            ctx.forms.add(primary).add(new PropInter())
+
         const res = calculateRec(ctx)
         if (res) return res
         ctx.forms.remove().remove()
@@ -40,7 +45,7 @@ function calculateRec(ctx: Context): boolean {
 }
 
 function calculate(goal: number, tolerance: number) {
-    const forms = new FormElements().add(new Prop())
+    const forms = new FormElements().add(new PropBorder())
     const ctx = new Context(forms, goal, tolerance)
 
     const res = calculateRec(ctx)

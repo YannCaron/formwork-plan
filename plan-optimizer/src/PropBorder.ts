@@ -1,11 +1,11 @@
 import FormElement from "./FormElement"
 
-export default class Prop extends FormElement {
+export default class PropBorder extends FormElement {
 
-    static SIZE = 12
+    static SIZE = 12.5
 
     get size() {
-        return Prop.SIZE
+        return PropBorder.SIZE
     }
 
     toString(): string {
