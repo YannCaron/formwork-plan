@@ -9,13 +9,16 @@ class Context {
     elements: CrossPiece[]
     forms: FormElements
 
+    scale: number
     goal: number
     tolerance: number
+
     calculationCount: number
 
-    constructor(forms: FormElements, elements: CrossPiece[], goal: number, tolerance: number) {
+    constructor(forms: FormElements, elements: CrossPiece[], scale: number, goal: number, tolerance: number) {
         this.forms = forms
         this.elements = elements.reverse()
+        this.scale = scale
         this.goal = goal
         this.tolerance = tolerance
         this.calculationCount = 0
@@ -49,13 +52,13 @@ function calculateRec(ctx: Context): boolean {
 
         console.log(element);
 
-        if (element.quantity >= 1) {
-            element.quantity -= 1
+        if (element.quantity >= ctx.scale) {
+            element.quantity -= ctx.scale
 
             const res = calculateRec(ctx)
             if (res) return res
 
-            element.quantity += 1
+            element.quantity += ctx.scale
         }
 
         ctx.forms.remove().remove()
@@ -66,12 +69,12 @@ function calculateRec(ctx: Context): boolean {
 }
 
 const primaries = [
-    new CrossPiece(90, 1),
-    new CrossPiece(110, 1),
-    new CrossPiece(115, 1),
-    new CrossPiece(150, 1),
-    new CrossPiece(170, 1),
-    new CrossPiece(180, 3)
+    new CrossPiece(90, 5),
+    new CrossPiece(110, 5),
+    new CrossPiece(115, 5),
+    new CrossPiece(150, 5),
+    new CrossPiece(170, 5),
+    new CrossPiece(180, 15)
 ]
 
 
@@ -85,7 +88,7 @@ const secondaries = [
 
 function calculate(goal: number, tolerance: number) {
     const forms = new FormElements().add(new PropBorder())
-    const ctx = new Context(forms, primaries, goal, tolerance)
+    const ctx = new Context(forms, primaries, 5, goal, tolerance)
 
     const res = calculateRec(ctx)
 
