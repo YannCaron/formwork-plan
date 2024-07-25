@@ -1,8 +1,14 @@
 import FormElement from "./FormElement";
 
+export enum CrossPieceType {
+    Primary = 'Primary',
+    Secondary = 'Secondary'
+}
+
 export default class CrossPiece extends FormElement {
 
-    private readonly _size:number
+    private readonly _type: CrossPieceType
+    private readonly _size: number
     private _quantity: number
 
     get size() {
@@ -17,8 +23,9 @@ export default class CrossPiece extends FormElement {
         this._quantity = value
     }
 
-    constructor(size: number, quantity:number) {
+    constructor(type: CrossPieceType, size: number, quantity: number) {
         super()
+        this._type = type
         this._size = size
         this._quantity = quantity
     }

@@ -3,7 +3,7 @@ import FormElements from "./src/FormElements";
 import PropBorder from "./src/PropBorder";
 import PropInter from "./src/PropInter";
 import FormElement from "./src/FormElement";
-import CrossPiece from "./src/CrossPiece";
+import CrossPiece, { CrossPieceType } from "./src/CrossPiece";
 
 class Context {
     elements: CrossPiece[]
@@ -50,8 +50,6 @@ function calculateRec(ctx: Context): boolean {
             new PropInter()
         )
 
-        console.log(element);
-
         if (element.quantity >= ctx.scale) {
             element.quantity -= ctx.scale
 
@@ -68,27 +66,30 @@ function calculateRec(ctx: Context): boolean {
 
 }
 
-const primaries = [
-    new CrossPiece(90, 5),
-    new CrossPiece(110, 5),
-    new CrossPiece(115, 5),
-    new CrossPiece(150, 5),
-    new CrossPiece(170, 5),
-    new CrossPiece(180, 15)
-]
+const primaries = () => {
+    return [
+        new CrossPiece(CrossPieceType.Primary, 90, 10),
+        new CrossPiece(CrossPieceType.Primary, 110, 10),
+        new CrossPiece(CrossPieceType.Primary, 115, 10),
+        new CrossPiece(CrossPieceType.Primary, 150, 10),
+        new CrossPiece(CrossPieceType.Primary, 170, 10),
+        new CrossPiece(CrossPieceType.Primary, 180, 10)
+    ]
+}
 
+const secondaries = () => {
+    return [
+        new CrossPiece(CrossPieceType.Secondary, 110, 10),
+        new CrossPiece(CrossPieceType.Secondary, 115, 10),
+        new CrossPiece(CrossPieceType.Secondary, 150, 10),
+        new CrossPiece(CrossPieceType.Secondary, 170, 10),
+        new CrossPiece(CrossPieceType.Secondary, 180, 10)
+    ]
+}
 
-const secondaries = [
-    new CrossPiece(110, 1),
-    new CrossPiece(115, 1),
-    new CrossPiece(150, 1),
-    new CrossPiece(170, 1),
-    new CrossPiece(180, 1)
-]
-
-function calculate(goal: number, tolerance: number) {
+function calculate(elements: CrossPiece[], scale: number, goal: number, tolerance: number): Context {
     const forms = new FormElements().add(new PropBorder())
-    const ctx = new Context(forms, primaries, 5, goal, tolerance)
+    const ctx = new Context(forms, elements, scale, goal, tolerance)
 
     const res = calculateRec(ctx)
 
@@ -98,11 +99,28 @@ function calculate(goal: number, tolerance: number) {
         console.log('NOT FOUND !', ctx.forms.toString())
     }
 
-    console.log('number of CrossPiece', (ctx.forms.count-1)/2)
+    return ctx
 
 }
 
-calculate(750, 5)
+let nbX = -1
+let oldNbX = 0
+let nbY = -1
+let oldNbY = 0
+
+while (oldNbX != nbX || oldNbY != nbY) {
+    oldNbX = nbX
+    oldNbY = nbY
+
+    const ctxX = calculate(primaries(), nbY, 750, 5)
+    nbX = (ctxX.forms.count - 1) / 2
+    console.log('number of X', nbX)
+
+    const ctxY = calculate(secondaries(), nbX, 750, 5)
+    nbY = (ctxY.forms.count - 1) / 2
+    console.log('number of Y', nbY)
+}
+
 
 /*
 for (let g = 500; g <= 1500; g += randomInt(50)) {
