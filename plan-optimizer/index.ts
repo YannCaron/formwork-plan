@@ -6,14 +6,14 @@ import FormElement from "./src/FormElement";
 import CrossPiece from "./src/CrossPiece";
 
 class Context {
-    elements: FormElement[]
+    elements: CrossPiece[]
     forms: FormElements
 
     goal: number
     tolerance: number
     calculationCount: number
 
-    constructor(forms: FormElements, elements: FormElement[], goal: number, tolerance: number) {
+    constructor(forms: FormElements, elements: CrossPiece[], goal: number, tolerance: number) {
         this.forms = forms
         this.elements = elements.reverse()
         this.goal = goal
@@ -27,7 +27,7 @@ class Context {
 }
 
 function isInTolerance(size: number, goal: number, tolerance: number) {
-    return size >= goal - tolerance &&size <= goal
+    return size >= goal - tolerance && size <= goal
 }
 
 function isOutside(size: number, goal: number) {
@@ -37,7 +37,7 @@ function isOutside(size: number, goal: number) {
 function calculateRec(ctx: Context): boolean {
     ctx.calculationCount++
 
-    if ( isInTolerance(ctx.forms.size, ctx.goal, ctx.tolerance)) return true
+    if (isInTolerance(ctx.forms.size, ctx.goal, ctx.tolerance)) return true
     else if (isOutside(ctx.forms.size, ctx.goal)) return false
 
     for (const element of ctx.elements) {
@@ -47,8 +47,17 @@ function calculateRec(ctx: Context): boolean {
             new PropInter()
         )
 
-        const res = calculateRec(ctx)
-        if (res) return res
+        console.log(element);
+
+        if (element.quantity >= 1) {
+            element.quantity -= 1
+
+            const res = calculateRec(ctx)
+            if (res) return res
+
+            element.quantity += 1
+        }
+
         ctx.forms.remove().remove()
     }
 
@@ -62,7 +71,7 @@ const primaries = [
     new CrossPiece(115, 1),
     new CrossPiece(150, 1),
     new CrossPiece(170, 1),
-    new CrossPiece(180, 1)
+    new CrossPiece(180, 3)
 ]
 
 
@@ -87,6 +96,10 @@ function calculate(goal: number, tolerance: number) {
     }
 }
 
+calculate(750, 5)
+
+/*
 for (let g = 500; g <= 1500; g += randomInt(50)) {
     calculate(g, 5)
 }
+*/

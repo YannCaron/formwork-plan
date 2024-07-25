@@ -21,7 +21,6 @@ export default class CrossPiece extends FormElement {
         super()
         this._size = size
         this._quantity = quantity
-        this._quantity = Number.POSITIVE_INFINITY
     }
 
     toString(): string {
