@@ -1,13 +1,14 @@
 import { randomInt } from "crypto";
 import FormElements from "./src/FormElements";
 import PropBorder from "./src/PropBorder";
-import PRIMARIES from "./src/Primary";
 import PropInter from "./src/PropInter";
 import FormElement from "./src/FormElement";
+import CrossPiece from "./src/CrossPiece";
 
 class Context {
     elements: FormElement[]
     forms: FormElements
+
     goal: number
     tolerance: number
     calculationCount: number
@@ -47,9 +48,27 @@ function calculateRec(ctx: Context): boolean {
 
 }
 
+const primaries = [
+    new CrossPiece(90, 1),
+    new CrossPiece(110, 1),
+    new CrossPiece(115, 1),
+    new CrossPiece(150, 1),
+    new CrossPiece(170, 1),
+    new CrossPiece(180, 1)
+]
+
+
+const secondaries = [
+    new CrossPiece(110, 1),
+    new CrossPiece(115, 1),
+    new CrossPiece(150, 1),
+    new CrossPiece(170, 1),
+    new CrossPiece(180, 1)
+]
+
 function calculate(goal: number, tolerance: number) {
     const forms = new FormElements().add(new PropBorder())
-    const ctx = new Context(forms, Object.values(PRIMARIES), goal, tolerance)
+    const ctx = new Context(forms, primaries, goal, tolerance)
 
     const res = calculateRec(ctx)
 
