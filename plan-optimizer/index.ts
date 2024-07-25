@@ -26,11 +26,19 @@ class Context {
     }
 }
 
+function isInTolerance(size: number, goal: number, tolerance: number) {
+    return size >= goal - tolerance &&size <= goal
+}
+
+function isOutside(size: number, goal: number) {
+    return size > goal
+}
+
 function calculateRec(ctx: Context): boolean {
     ctx.calculationCount++
 
-    if (ctx.forms.size >= ctx.goal - ctx.tolerance && ctx.forms.size <= ctx.goal) return true
-    else if (ctx.forms.size > ctx.goal) return false
+    if ( isInTolerance(ctx.forms.size, ctx.goal, ctx.tolerance)) return true
+    else if (isOutside(ctx.forms.size, ctx.goal)) return false
 
     for (const element of ctx.elements) {
         ctx.forms.add(element)
