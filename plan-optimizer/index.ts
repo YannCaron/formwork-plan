@@ -97,6 +97,9 @@ function calculate(goal: number, tolerance: number) {
     } else {
         console.log('NOT FOUND !', ctx.forms.toString())
     }
+
+    console.log('number of CrossPiece', (ctx.forms.count-1)/2)
+
 }
 
 calculate(750, 5)

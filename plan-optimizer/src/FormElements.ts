@@ -1,3 +1,4 @@
+import CrossPiece from "./CrossPiece";
 import FormElement from "./FormElement";
 
 export default class FormElements extends FormElement {
@@ -6,6 +7,10 @@ export default class FormElements extends FormElement {
 
     get size() {
         return this._elements.map(e => e.size).reduce((acc, e) => acc + e, 0)
+    }
+
+    get count(){
+        return this._elements.length        
     }
 
     constructor() {
