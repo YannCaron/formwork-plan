@@ -3,15 +3,18 @@ import FormElements from "./src/FormElements";
 import PropBorder from "./src/PropBorder";
 import PRIMARIES from "./src/Primary";
 import PropInter from "./src/PropInter";
+import FormElement from "./src/FormElement";
 
 class Context {
+    elements: FormElement[]
     forms: FormElements
     goal: number
     tolerance: number
     calculationCount: number
 
-    constructor(forms: FormElements, goal: number, tolerance: number) {
+    constructor(forms: FormElements, elements: FormElement[], goal: number, tolerance: number) {
         this.forms = forms
+        this.elements = elements.reverse()
         this.goal = goal
         this.tolerance = tolerance
         this.calculationCount = 0
@@ -28,9 +31,8 @@ function calculateRec(ctx: Context): boolean {
     if (ctx.forms.size >= ctx.goal - ctx.tolerance && ctx.forms.size <= ctx.goal) return true
     else if (ctx.forms.size > ctx.goal) return false
 
-    const primaries = Object.values(PRIMARIES).reverse()
-    for (const primary of primaries) {
-        ctx.forms.add(primary)
+    for (const element of ctx.elements) {
+        ctx.forms.add(element)
         ctx.forms.add(ctx.forms.simulateSize(new PropBorder()) >= ctx.goal - ctx.tolerance ?
             new PropBorder() :
             new PropInter()
@@ -47,7 +49,7 @@ function calculateRec(ctx: Context): boolean {
 
 function calculate(goal: number, tolerance: number) {
     const forms = new FormElements().add(new PropBorder())
-    const ctx = new Context(forms, goal, tolerance)
+    const ctx = new Context(forms, Object.values(PRIMARIES), goal, tolerance)
 
     const res = calculateRec(ctx)
 
