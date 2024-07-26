@@ -1,10 +1,12 @@
 import CrossPiece, { CrossPieceType } from "./src/CrossPiece";
+import FormElement from "./src/FormElement";
 import FormElements from "./src/FormElements";
 import PropBorder from "./src/PropBorder";
 import PropInter from "./src/PropInter";
 
 class Context {
-    elements: CrossPiece[]
+    crossPieces: CrossPiece[]
+    quantities: Map<CrossPiece, number>
     forms: FormElements
 
     scale: number
@@ -13,9 +15,19 @@ class Context {
 
     calculationCount: number
 
-    constructor(forms: FormElements, elements: CrossPiece[], scale: number, goal: number, tolerance: number) {
+    getQuantity(crossPiece:CrossPiece):number {
+        return this.quantities.get(crossPiece) || -10
+    }
+
+    addToQuantity(crossPiece:CrossPiece, q: number) {
+        const quantity = this.getQuantity(crossPiece)
+        this.quantities.set(crossPiece, quantity + q)
+    }
+
+    constructor(forms: FormElements, quantities: Map<CrossPiece, number>, elements: CrossPiece[], scale: number, goal: number, tolerance: number) {
         this.forms = forms
-        this.elements = elements.reverse()
+        this.quantities = quantities
+        this.crossPieces = elements.reverse()
         this.scale = scale
         this.goal = goal
         this.tolerance = tolerance
@@ -41,20 +53,20 @@ function calculateRec(ctx: Context): boolean {
     if (isInTolerance(ctx.forms.size, ctx.goal, ctx.tolerance)) return true
     else if (isOutside(ctx.forms.size, ctx.goal)) return false
 
-    for (const element of ctx.elements) {
-        ctx.forms.add(element)
+    for (const crossPiece of ctx.crossPieces) {
+        ctx.forms.add(crossPiece)
         ctx.forms.add(ctx.forms.simulateSize(new PropBorder()) >= ctx.goal - ctx.tolerance ?
             new PropBorder() :
             new PropInter()
         )
 
-        if (element.quantity >= ctx.scale) {
-            element.quantity -= ctx.scale
+        if (ctx.getQuantity(crossPiece) >= ctx.scale) {
+            ctx.addToQuantity(crossPiece, -ctx.scale)
 
             const res = calculateRec(ctx)
             if (res) return res
 
-            element.quantity += ctx.scale
+            ctx.addToQuantity(crossPiece, ctx.scale)
         }
 
         ctx.forms.remove().remove()
@@ -64,30 +76,34 @@ function calculateRec(ctx: Context): boolean {
 
 }
 
-const primaries = () => {
-    return [
-        new CrossPiece(CrossPieceType.Primary, 90, 10),
-        new CrossPiece(CrossPieceType.Primary, 110, 10),
-        new CrossPiece(CrossPieceType.Primary, 115, 10),
-        new CrossPiece(CrossPieceType.Primary, 150, 10),
-        new CrossPiece(CrossPieceType.Primary, 170, 10),
-        new CrossPiece(CrossPieceType.Primary, 180, 10)
-    ]
+const primaries = [
+    new CrossPiece(CrossPieceType.Primary, 90),
+    new CrossPiece(CrossPieceType.Primary, 110),
+    new CrossPiece(CrossPieceType.Primary, 115),
+    new CrossPiece(CrossPieceType.Primary, 150),
+    new CrossPiece(CrossPieceType.Primary, 170),
+    new CrossPiece(CrossPieceType.Primary, 180)
+]
+
+const secondaries = [
+    new CrossPiece(CrossPieceType.Secondary, 110),
+    new CrossPiece(CrossPieceType.Secondary, 115),
+    new CrossPiece(CrossPieceType.Secondary, 150),
+    new CrossPiece(CrossPieceType.Secondary, 170),
+    new CrossPiece(CrossPieceType.Secondary, 180)
+]
+
+const getQuantities = (crossPieces: CrossPiece[]): Map<CrossPiece, number> => {
+    const map = new Map<CrossPiece, number>()
+    for (const crossPiece of crossPieces) {
+        map.set(crossPiece, 100)
+    }
+    return map
 }
 
-const secondaries = () => {
-    return [
-        new CrossPiece(CrossPieceType.Secondary, 110, 10),
-        new CrossPiece(CrossPieceType.Secondary, 115, 10),
-        new CrossPiece(CrossPieceType.Secondary, 150, 10),
-        new CrossPiece(CrossPieceType.Secondary, 170, 10),
-        new CrossPiece(CrossPieceType.Secondary, 180, 10)
-    ]
-}
-
-function calculate(elements: CrossPiece[], scale: number, goal: number, tolerance: number): Context {
+function calculate(elements: CrossPiece[], quantities: Map<CrossPiece, number>, scale: number, goal: number, tolerance: number): Context {
     const forms = new FormElements().add(new PropBorder())
-    const ctx = new Context(forms, elements, scale, goal, tolerance)
+    const ctx = new Context(forms, quantities, elements, scale, goal, tolerance)
 
     const res = calculateRec(ctx)
 
@@ -113,11 +129,11 @@ while (oldNbX != nbX || oldNbY != nbY) {
     oldNbX = nbX
     oldNbY = nbY
 
-    const ctxX = calculate(primaries(), nbY, 750, 5)
+    const ctxX = calculate(primaries, getQuantities(primaries), nbY, 750, 5)
     nbX = (ctxX.forms.count - 1) / 2
     console.log('number of traverses in X', nbX)
 
-    const ctxY = calculate(secondaries(), nbX, 750, 5)
+    const ctxY = calculate(secondaries, getQuantities(secondaries), nbX, 750, 5)
     nbY = (ctxY.forms.count - 1) / 2
     console.log('number of traverses in Y', nbY)
 
