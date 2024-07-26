@@ -31,7 +31,7 @@ export default class CrossPiece extends FormElement {
     }
 
     toString(): string {
-        return `P-${this._size}`
+        return `${this._type.substring(0, 1)}-${this._size}`
     }
 
 }
