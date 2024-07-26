@@ -1,9 +1,7 @@
-import { randomInt } from "crypto";
+import CrossPiece, { CrossPieceType } from "./src/CrossPiece";
 import FormElements from "./src/FormElements";
 import PropBorder from "./src/PropBorder";
 import PropInter from "./src/PropInter";
-import FormElement from "./src/FormElement";
-import CrossPiece, { CrossPieceType } from "./src/CrossPiece";
 
 class Context {
     elements: CrossPiece[]
@@ -103,6 +101,9 @@ function calculate(elements: CrossPiece[], scale: number, goal: number, toleranc
 
 }
 
+let count = 0
+let start = performance.now()
+
 let nbX = -1
 let oldNbX = 0
 let nbY = -1
@@ -114,13 +115,17 @@ while (oldNbX != nbX || oldNbY != nbY) {
 
     const ctxX = calculate(primaries(), nbY, 750, 5)
     nbX = (ctxX.forms.count - 1) / 2
-    console.log('number of X', nbX)
+    console.log('number of traverses in X', nbX)
 
     const ctxY = calculate(secondaries(), nbX, 750, 5)
     nbY = (ctxY.forms.count - 1) / 2
-    console.log('number of Y', nbY)
+    console.log('number of traverses in Y', nbY)
+
+    count++
 }
 
+let timeSpent = performance.now() - start
+console.log(`Algorithms executed; iteration: ${count}, time spent: ${Math.round(timeSpent)} milliseconds`);
 
 /*
 for (let g = 500; g <= 1500; g += randomInt(50)) {
