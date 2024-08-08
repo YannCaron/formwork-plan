@@ -1,5 +1,13 @@
 import Optimizer from "./src/Optimizer";
+import FormElement from "./src/FormElement";
+import FormElements from "./src/FormElements";
+import CrossPiece from "./src/CrossPiece";
+import {CrossPieceType} from "./src/CrossPiece"
+import CrossPieceAssets from "./src/CrossPieceAssets"
+import PropBorder from "./src/PropBorder"
+import PropInter from "./src/PropInter"
 
+/*
 const primaries = {
     p90: [90, 10],
     p110: [110, 10],
@@ -18,3 +26,7 @@ const secondaries = {
 }
 
 Optimizer.calculate(115, 550, 5, primaries, secondaries)
+*/
+
+export { FormElement, FormElements, CrossPiece, CrossPieceType, CrossPieceAssets, PropBorder, PropInter }
+export default Optimizer

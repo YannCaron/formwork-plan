@@ -1,4 +1,4 @@
-import FormElement from "./FormElement";
+import { FormElement } from "./../index";
 
 export enum CrossPieceType {
     Primary = 'Primary',

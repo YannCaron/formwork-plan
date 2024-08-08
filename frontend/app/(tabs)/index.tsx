@@ -1,9 +1,10 @@
-import { Alert, Button, GestureResponderEvent, View, Text } from 'react-native';
+import { Alert, Button, GestureResponderEvent, View, Text, TextInput } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { useState } from 'react';
 import CrossPiece from '../components/CrossPiece';
 import styles from './../styles';
+import Optimizer from '@cyann/plan-optimizer';
 
 export default function HomeScreen() {
 
@@ -20,10 +21,41 @@ export default function HomeScreen() {
   const [s170, setS170] = useState('100');
   const [s180, setS180] = useState('100');
 
+  const [width, setWidth] = useState('1000');
+  const [height, setHeight] = useState('1000');
+  const [tolerance, setTolerance] = useState('5');
+
   const [result, setResult] = useState('no result yet!');
- 
+
   function calculate_onPress(e: GestureResponderEvent) {
     setResult('calculation started')
+
+    const primaries = {
+      p90: [90, p90],
+      p110: [110, p110],
+      p115: [115, p115],
+      p150: [150, p150],
+      p170: [170, p170],
+      p180: [180, p180]
+    }
+
+    const secondaries = {
+      s110: [110, s110],
+      s115: [115, s115],
+      s150: [150, s150],
+      s170: [170, s170],
+      s180: [180, s180]
+    }
+
+    const res = Optimizer.calculate(
+      Number.parseInt(width), Number.parseInt(height), 
+      Number.parseInt(tolerance), primaries, secondaries)
+    console.log('res', res);
+    setResult(`result:
+  - ${res.xAxis?.toString()}
+  - ${res.yAxis?.toString()}
+`)
+
   }
 
   return (
@@ -45,6 +77,33 @@ export default function HomeScreen() {
         <CrossPiece name='S-170' value={s170} onChangeValue={setS170} />
         <CrossPiece name='S-180' value={s180} onChangeValue={setS180} />
       </Collapsible>
+
+      <View style={styles.row}>
+        <Text>Width :</Text>
+        <TextInput style={styles.input}
+          inputMode='numeric'
+          value={width}
+          onChangeText={setWidth} />
+        <Text>cm</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Text>Height :</Text>
+        <TextInput style={styles.input}
+          inputMode='numeric'
+          value={height}
+          onChangeText={setHeight} />
+        <Text>cm</Text>
+      </View>
+
+      <View style={styles.row}>
+        <Text>Tolerance :</Text>
+        <TextInput style={styles.input}
+          inputMode='numeric'
+          value={tolerance}
+          onChangeText={setTolerance} />
+        <Text>cm</Text>
+      </View>
 
       <Button title="Calculate" onPress={calculate_onPress}></Button>
 

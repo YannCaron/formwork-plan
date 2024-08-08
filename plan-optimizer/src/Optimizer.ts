@@ -1,8 +1,8 @@
-import CrossPiece, { CrossPieceType } from "./CrossPiece";
-import CrossPieceAssets from "./CrossPieceAssets";
-import FormElements from "./FormElements";
-import PropBorder from "./PropBorder";
-import PropInter from "./PropInter";
+import {CrossPiece,  CrossPieceType } from "./../index"
+import {CrossPieceAssets} from "./../index"
+import {FormElements} from "./../index"
+import {PropBorder} from "./../index"
+import {PropInter} from "./../index"
 
 class Context {
     elements: CrossPieceAssets[]
@@ -26,6 +26,22 @@ class Context {
     toString() {
         return `goal: ${this.goal}, found: ${this.forms.size}, difference: ${this.goal - this.forms.size}, tolerance: ${this.tolerance}, iteration: ${this.calculationCount}, topology: ${this.forms.toString()}`
     }
+}
+
+class Result {
+
+    timespent: number
+    numberOfIteration: number
+    xAxis: Context | null
+    yAxis: Context | null
+
+    constructor(timespent: number, numberOfIteration: number, xAxis: Context | null, yAxis: Context | null) {
+        this.timespent = timespent
+        this.numberOfIteration = numberOfIteration
+        this.xAxis = xAxis
+        this.yAxis = yAxis
+    }
+
 }
 
 export default class Optimizer {
@@ -88,7 +104,7 @@ export default class Optimizer {
             [k: number]: number[]
         }, secondaries: {
             [k: number]: number[]
-        }) {
+        }): Result {
 
         let count = 0
         let start = performance.now()
@@ -98,6 +114,9 @@ export default class Optimizer {
         let nbY = -1
         let oldNbY = 0
 
+        let currentCtxX: Context | null = null
+        let currentCtxY: Context | null = null
+
         while (oldNbX != nbX || oldNbY != nbY) {
             oldNbX = nbX
             oldNbY = nbY
@@ -105,15 +124,17 @@ export default class Optimizer {
             const primaryAssets =
                 Object.entries(primaries).map(([_, [t, n]]) => new CrossPieceAssets(new CrossPiece(CrossPieceType.Primary, t), n))
 
-            const [resX, ctxX] = this.calculateAxis(primaryAssets, nbY, width, accuracy)
+            let [resX, ctxX] = this.calculateAxis(primaryAssets, nbY, width, accuracy)
             nbX = (ctxX.forms.count - 1) / 2
+            currentCtxX = ctxX
             console.log('number of traverses in X', nbX)
             if (!resX) break
 
             const secondaryAssets =
-                Object.entries(secondaries).map(([_, [t, n]]) => new CrossPieceAssets(new CrossPiece(CrossPieceType.Primary, t), n))
+                Object.entries(secondaries).map(([_, [t, n]]) => new CrossPieceAssets(new CrossPiece(CrossPieceType.Secondary, t), n))
 
-            const [resY, ctxY] = this.calculateAxis(secondaryAssets, nbX, height, accuracy)
+            let [resY, ctxY] = this.calculateAxis(secondaryAssets, nbX, height, accuracy)
+            currentCtxY = ctxY
             nbY = (ctxY.forms.count - 1) / 2
             console.log('number of traverses in Y', nbY)
             if (!resY) break
@@ -124,6 +145,7 @@ export default class Optimizer {
         let timeSpent = performance.now() - start
         console.log(`Algorithms executed; iteration: ${count}, time spent: ${Math.round(timeSpent)} milliseconds`);
 
+        return new Result(timeSpent, count, currentCtxX, currentCtxY)
     }
 
 }

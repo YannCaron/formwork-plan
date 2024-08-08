@@ -1,4 +1,4 @@
-import CrossPiece from "./CrossPiece";
+import { CrossPiece } from "./../index";
 
 export default class CrossPieceAssets {
 

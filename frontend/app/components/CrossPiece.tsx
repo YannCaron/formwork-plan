@@ -12,8 +12,8 @@ interface Props {
 export default function CrossPiece(props: Props) {
 
     const onChangeText = (text: string) => {
-        if (props.onChangeValue && +text) {
-            props.onChangeValue(text)
+        if (props.onChangeValue && (text === '' || text === '0' ||  +text)) {
+            props.onChangeValue(text || '0')
         }
     }
 
@@ -24,6 +24,7 @@ export default function CrossPiece(props: Props) {
                 inputMode='numeric'
                 value={props.value}
                 onChangeText={onChangeText} />
+            <Text>cm</Text>
         </View>
     )
 }

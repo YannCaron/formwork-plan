@@ -1,7 +1,8 @@
 {
-  "name": "ts-node-basic-project",
-  "version": "0.0.1",
-  "description": "",
+  "name": "@cyann/plan-optimizer",
+  "version": "0.0.2",
+  "description": "A Sat-Solver algorithm to calculate formwork plan.",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
