@@ -28,10 +28,11 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start'
     },
     input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
+        height: 30,
+        width: 50,
+        marginStart: 10,
+        marginEnd: 10,
+        borderWidth: 1
     },
 })
 

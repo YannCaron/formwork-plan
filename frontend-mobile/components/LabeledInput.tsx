@@ -1,6 +1,6 @@
 
 import { TextInput } from 'react-native-gesture-handler';
-import globalStyles from '../styles';
+import globalStyles from '../app/styles';
 import { InputModeOptions, StyleSheet, Text, View } from 'react-native';
 
 interface Props {

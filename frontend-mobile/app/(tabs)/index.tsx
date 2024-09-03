@@ -2,7 +2,7 @@ import { Alert, Button, GestureResponderEvent, View, Text, TextInput, StyleSheet
 
 import { Collapsible } from '@/components/Collapsible';
 import { useState } from 'react';
-import LabeledInput from '../components/LabeledInput';
+import LabeledInput from '../../components/LabeledInput';
 import globalStyles from './../styles';
 import Optimizer from '@cyann/plan-optimizer';
 
