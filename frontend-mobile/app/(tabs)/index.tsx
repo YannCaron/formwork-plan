@@ -1,8 +1,8 @@
-import { Alert, Button, GestureResponderEvent, View, Text, TextInput } from 'react-native';
+import { Alert, Button, GestureResponderEvent, View, Text, TextInput, StyleSheet } from 'react-native';
 
 import { Collapsible } from '@/components/Collapsible';
 import { useState } from 'react';
-import CrossPiece from '../components/CrossPiece';
+import LabeledInput from '../components/LabeledInput';
 import globalStyles from './../styles';
 import Optimizer from '@cyann/plan-optimizer';
 
@@ -48,61 +48,45 @@ export default function HomeScreen() {
     }
 
     const res = Optimizer.calculate(
-      Number.parseInt(width), Number.parseInt(height), 
+      Number.parseInt(width), Number.parseInt(height),
       Number.parseInt(tolerance), primaries, secondaries)
     console.log('res', res);
     setResult(`result:
   - ${res.xAxis?.toString()}
   - ${res.yAxis?.toString()}
 `)
-
   }
 
   return (
     <View style={styles.column}>
 
-      <Collapsible title="Primaries:">
-        <CrossPiece name='P-90' value={p90} onChangeValue={setP90} />
-        <CrossPiece name='P-110' value={p110} onChangeValue={setP110} />
-        <CrossPiece name='P-115' value={p115} onChangeValue={setP115} />
-        <CrossPiece name='P-150' value={p150} onChangeValue={setP150} />
-        <CrossPiece name='P-170' value={p170} onChangeValue={setP170} />
-        <CrossPiece name='P-180' value={p180} onChangeValue={setP180} />
-      </Collapsible>
+      <View style={styles.column}>
+        <Text>Primaries</Text>
+        <View style={styles.row}>
+          <LabeledInput before='090' inputMode='numeric' value={p90} onChangeValue={setP90} />
+          <LabeledInput before='110' inputMode='numeric' value={p110} onChangeValue={setP110} />
+          <LabeledInput before='115' inputMode='numeric' value={p115} onChangeValue={setP115} />
+          <LabeledInput before='150' inputMode='numeric' value={p150} onChangeValue={setP150} />
+          <LabeledInput before='170' inputMode='numeric' value={p170} onChangeValue={setP170} />
+          <LabeledInput before='180' inputMode='numeric' value={p180} onChangeValue={setP180} />
+        </View>
 
-      <Collapsible title="Secondaries:">
-        <CrossPiece name='S-110' value={s110} onChangeValue={setS110} />
-        <CrossPiece name='S-115' value={s115} onChangeValue={setS115} />
-        <CrossPiece name='S-150' value={s150} onChangeValue={setS150} />
-        <CrossPiece name='S-170' value={s170} onChangeValue={setS170} />
-        <CrossPiece name='S-180' value={s180} onChangeValue={setS180} />
-      </Collapsible>
+        <Text>Secondaries</Text>
+        <View style={styles.row}>
+          <LabeledInput before='110' inputMode='numeric' value={s110} onChangeValue={setS110} />
+          <LabeledInput before='115' inputMode='numeric' value={s115} onChangeValue={setS115} />
+          <LabeledInput before='150' inputMode='numeric' value={s150} onChangeValue={setS150} />
+          <LabeledInput before='170' inputMode='numeric' value={s170} onChangeValue={setS170} />
+          <LabeledInput before='180' inputMode='numeric' value={s180} onChangeValue={setS180} />
+        </View>
 
-      <View style={styles.row}>
-        <Text>Width :</Text>
-        <TextInput style={styles.input}
-          inputMode='numeric'
-          value={width}
-          onChangeText={setWidth} />
-        <Text>cm</Text>
       </View>
 
+      <Text>Global</Text>
       <View style={styles.row}>
-        <Text>Height :</Text>
-        <TextInput style={styles.input}
-          inputMode='numeric'
-          value={height}
-          onChangeText={setHeight} />
-        <Text>cm</Text>
-      </View>
-
-      <View style={styles.row}>
-        <Text>Tolerance :</Text>
-        <TextInput style={styles.input}
-          inputMode='numeric'
-          value={tolerance}
-          onChangeText={setTolerance} />
-        <Text>cm</Text>
+        <LabeledInput before='Width' after='cm' inputMode='numeric' value={width} onChangeValue={setWidth} />
+        <LabeledInput before='Height' after='cm' inputMode='numeric' value={height} onChangeValue={setHeight} />
+        <LabeledInput before='Tolerance' after='cm' inputMode='numeric' value={tolerance} onChangeValue={setTolerance} />
       </View>
 
       <Button title="Calculate" onPress={calculate_onPress}></Button>
