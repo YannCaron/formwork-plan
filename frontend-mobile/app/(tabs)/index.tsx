@@ -3,7 +3,7 @@ import { Alert, Button, GestureResponderEvent, View, Text, TextInput } from 'rea
 import { Collapsible } from '@/components/Collapsible';
 import { useState } from 'react';
 import CrossPiece from '../components/CrossPiece';
-import styles from './../styles';
+import globalStyles from './../styles';
 import Optimizer from '@cyann/plan-optimizer';
 
 export default function HomeScreen() {
@@ -113,3 +113,7 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  ...globalStyles
+})
