@@ -1,9 +1,8 @@
-import { Alert, Button, GestureResponderEvent, View, Text, TextInput, StyleSheet } from 'react-native';
+import { Button, GestureResponderEvent, View, Text, StyleSheet } from 'react-native';
 
-import { Collapsible } from '@/components/Collapsible';
 import { useState } from 'react';
 import LabeledInput from '../../components/LabeledInput';
-import globalStyles from './../styles';
+import globalStyles from '../styles';
 import Optimizer from '@cyann/plan-optimizer';
 
 export default function HomeScreen() {
