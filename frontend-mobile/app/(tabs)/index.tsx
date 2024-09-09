@@ -50,8 +50,7 @@ export default function HomeScreen() {
       Number.parseInt(width), Number.parseInt(height),
       Number.parseInt(tolerance), primaries, secondaries)
     console.log('res', res);
-    setResult(`result:
-  - ${res.xAxis?.toString()}
+    setResult(`  - ${res.xAxis?.toString()}
   - ${res.yAxis?.toString()}
 `)
   }
