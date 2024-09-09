@@ -57,10 +57,11 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.column}>
+      <Text style={styles.title1}>Formework plan</Text>
 
       <View style={styles.column}>
-        <Text>Primaries</Text>
-        <View style={styles.row}>
+        <Text style={styles.title2}>Primaries</Text>
+        <View style={styles.rowBlock}>
           <LabeledInput before='090' inputMode='numeric' value={p90} onChangeValue={setP90} />
           <LabeledInput before='110' inputMode='numeric' value={p110} onChangeValue={setP110} />
           <LabeledInput before='115' inputMode='numeric' value={p115} onChangeValue={setP115} />
@@ -69,8 +70,8 @@ export default function HomeScreen() {
           <LabeledInput before='180' inputMode='numeric' value={p180} onChangeValue={setP180} />
         </View>
 
-        <Text>Secondaries</Text>
-        <View style={styles.row}>
+        <Text style={styles.title2}>Secondaries</Text>
+        <View style={styles.rowBlock}>
           <LabeledInput before='110' inputMode='numeric' value={s110} onChangeValue={setS110} />
           <LabeledInput before='115' inputMode='numeric' value={s115} onChangeValue={setS115} />
           <LabeledInput before='150' inputMode='numeric' value={s150} onChangeValue={setS150} />
@@ -80,22 +81,32 @@ export default function HomeScreen() {
 
       </View>
 
-      <Text>Global</Text>
-      <View style={styles.row}>
+      <Text style={styles.title2}>Global</Text>
+      <View style={styles.rowBlock}>
         <LabeledInput before='Width' after='cm' inputMode='numeric' value={width} onChangeValue={setWidth} />
         <LabeledInput before='Height' after='cm' inputMode='numeric' value={height} onChangeValue={setHeight} />
         <LabeledInput before='Tolerance' after='cm' inputMode='numeric' value={tolerance} onChangeValue={setTolerance} />
       </View>
 
-      <Button title="Calculate" onPress={calculate_onPress}></Button>
+      <View style={styles.buttonBlock}>
+        <Button title="Calculate" onPress={calculate_onPress}></Button>
+      </View>
 
-      <Text>Result:</Text>
-      <Text>{result}</Text>
+      <Text style={styles.title2}>Result</Text>
+      <View style={styles.rowBlock}>
+        <Text>{result}</Text>
+      </View>
 
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  ...globalStyles
+  ...globalStyles,
+  title1: { margin: 20, alignSelf: 'center', fontSize: 20 },
+  title2: { margin: 10, fontSize: 15 },
+  rowBlock: { ...globalStyles.row, marginStart: 20 },
+  buttonBlock: { ...globalStyles.row, margin: 10, marginTop: 20, alignSelf: 'center' }
 })
+
+

@@ -34,6 +34,10 @@ const styles = StyleSheet.create({
         marginEnd: 10,
         borderWidth: 1
     },
+    button: {
+        marginStart: 10,
+        marginEnd: 10
+    }
 })
 
 export default styles
