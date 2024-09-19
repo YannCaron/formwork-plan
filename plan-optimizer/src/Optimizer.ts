@@ -1,8 +1,8 @@
-import {CrossPiece,  CrossPieceType } from "./../index"
-import {CrossPieceAssets} from "./../index"
-import {FormElements} from "./../index"
-import {PropBorder} from "./../index"
-import {PropInter} from "./../index"
+import { CrossPiece, CrossPieceType } from "./../index"
+import { CrossPieceAssets } from "./../index"
+import { FormElements } from "./../index"
+import { PropBorder } from "./../index"
+import { PropInter } from "./../index"
 
 class Context {
     elements: CrossPieceAssets[]
@@ -13,6 +13,10 @@ class Context {
     tolerance: number
 
     calculationCount: number
+
+    get rest() {
+        return this.goal - this.forms.size
+    }
 
     constructor(forms: FormElements, elements: CrossPieceAssets[], scale: number, goal: number, tolerance: number) {
         this.forms = forms
