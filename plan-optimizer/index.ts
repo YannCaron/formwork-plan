@@ -1,63 +1,32 @@
-import { randomInt } from "crypto";
+import Optimizer from "./src/Optimizer";
+import FormElement from "./src/FormElement";
 import FormElements from "./src/FormElements";
-import PropBorder from "./src/PropBorder";
-import PRIMARIES from "./src/Primary";
-import PropInter from "./src/PropInter";
+import CrossPiece from "./src/CrossPiece";
+import {CrossPieceType} from "./src/CrossPiece"
+import CrossPieceAssets from "./src/CrossPieceAssets"
+import PropBorder from "./src/PropBorder"
+import PropInter from "./src/PropInter"
 
-class Context {
-    forms: FormElements
-    goal: number
-    tolerance: number
-    calculationCount: number
-
-    constructor(forms: FormElements, goal: number, tolerance: number) {
-        this.forms = forms
-        this.goal = goal
-        this.tolerance = tolerance
-        this.calculationCount = 0
-    }
-
-    toString() {
-        return `goal: ${this.goal}, found: ${this.forms.size}, difference: ${this.goal - this.forms.size}, tolerance: ${this.tolerance}, iteration: ${this.calculationCount}, topology: ${this.forms.toString()}`
-    }
+/*
+const primaries = {
+    p90: [90, 10],
+    p110: [110, 10],
+    p115: [115, 10],
+    p150: [150, 10],
+    p170: [170, 10],
+    p180: [180, 10]
 }
 
-function calculateRec(ctx: Context): boolean {
-    ctx.calculationCount++
-
-    if (ctx.forms.size >= ctx.goal - ctx.tolerance && ctx.forms.size <= ctx.goal) return true
-    else if (ctx.forms.size > ctx.goal) return false
-
-    const primaries = Object.values(PRIMARIES).reverse()
-    for (const primary of primaries) {
-        ctx.forms.add(primary)
-        ctx.forms.add(ctx.forms.simulateSize(new PropBorder()) >= ctx.goal - ctx.tolerance ?
-            new PropBorder() :
-            new PropInter()
-        )
-
-        const res = calculateRec(ctx)
-        if (res) return res
-        ctx.forms.remove().remove()
-    }
-
-    return false
-
+const secondaries = {
+    s110: [110, 8],
+    s115: [115, 8],
+    s150: [150, 8],
+    s170: [170, 8],
+    s180: [180, 8]
 }
 
-function calculate(goal: number, tolerance: number) {
-    const forms = new FormElements().add(new PropBorder())
-    const ctx = new Context(forms, goal, tolerance)
+Optimizer.calculate(115, 550, 5, primaries, secondaries)
+*/
 
-    const res = calculateRec(ctx)
-
-    if (res) {
-        console.log(ctx.toString())
-    } else {
-        console.log('NOT FOUND !', ctx.forms.toString())
-    }
-}
-
-for (let g = 500; g <= 1500; g += randomInt(50)) {
-    calculate(g, 5)
-}
+export { FormElement, FormElements, CrossPiece, CrossPieceType, CrossPieceAssets, PropBorder, PropInter }
+export default Optimizer

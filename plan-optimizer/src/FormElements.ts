@@ -1,11 +1,19 @@
-import FormElement from "./FormElement";
+import { FormElement } from "./../index";
 
 export default class FormElements extends FormElement {
 
     private readonly _elements: Array<FormElement>
 
+    get elements() {
+        return this._elements
+    }
+
     get size() {
         return this._elements.map(e => e.size).reduce((acc, e) => acc + e, 0)
+    }
+
+    get count() {
+        return this._elements.length
     }
 
     constructor() {
