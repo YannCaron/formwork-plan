@@ -3,37 +3,40 @@ import { useState } from 'react'
 import './App.css'
 import QuantityEditor from './components/QuantityEditor'
 import Optimizer from '@cyann/plan-optimizer';
+import Plan from './Plan';
+import { Result } from '@cyann/plan-optimizer/dist/src/Optimizer';
 
 function App() {
-  const [p90, setP90] = useState(100);
-  const [p110, setP110] = useState(100);
-  const [p115, setP115] = useState(100);
-  const [p150, setP150] = useState(100);
-  const [p170, setP170] = useState(100);
-  const [p180, setP180] = useState(100);
+  const [p90, setP90] = useState(100)
+  const [p110, setP110] = useState(100)
+  const [p115, setP115] = useState(100)
+  const [p150, setP150] = useState(100)
+  const [p170, setP170] = useState(100)
+  const [p180, setP180] = useState(100)
 
-  const [s110, setS110] = useState(100);
-  const [s115, setS115] = useState(100);
-  const [s150, setS150] = useState(100);
-  const [s170, setS170] = useState(100);
-  const [s180, setS180] = useState(100);
+  const [s110, setS110] = useState(100)
+  const [s115, setS115] = useState(100)
+  const [s150, setS150] = useState(100)
+  const [s170, setS170] = useState(100)
+  const [s180, setS180] = useState(100)
 
-  const [width, setWidth] = useState(1000);
-  const [height, setHeight] = useState(1000);
-  const [tolerance, setTolerance] = useState(5);
+  const [width, setWidth] = useState(1000)
+  const [height, setHeight] = useState(1000)
+  const [tolerance, setTolerance] = useState(5)
 
-  const [result, setResult] = useState('pas de résultat pour le moment!');
+  const [result, setResult] = useState<Result>()
+  const [resultTxt, setResultTxt] = useState('pas de résultat pour le moment!')
 
   function calculate_onClick() {
-    setResult('calculation started')
+    setResultTxt('calculation started')
 
     const primaries = {
-      p90: [90, p90],
-      p110: [110, p110],
-      p115: [115, p115],
-      p150: [150, p150],
-      p170: [170, p170],
-      p180: [180, p180]
+      p90: [90, p90],    // pink
+      p110: [110, p110], // black
+      p115: [115, p115], // dark blue
+      p150: [150, p150], // green
+      p170: [170, p170], // red and cyan
+      p180: [180, p180]  // cyan
     }
 
     const secondaries = {
@@ -48,6 +51,8 @@ function App() {
       width, height,
       tolerance, primaries, secondaries)
 
+    setResult(res)
+
     const result =
       `axe x : ${res.xAxis?.forms.toString()}
 total x : ${res.xAxis?.forms.size}
@@ -56,15 +61,13 @@ axe y : ${res.yAxis?.forms.toString()}
 total y : ${res.yAxis?.forms.size}
 reste y : ${res.yAxis?.rest}`
 
-    console.log('res', result);
-
-    setResult(result)
+    setResultTxt(result)
   }
 
   return (
     <>
-    <h1>Plan d'étaiement</h1>
-      <Accordion defaultIndex={[0]} allowMultiple>
+      <h1>Plan d'étaiement</h1>
+      <Accordion defaultIndex={[2, 3]} allowMultiple>
         <AccordionItem>
           <h2>
             <AccordionButton>
@@ -126,7 +129,20 @@ reste y : ${res.yAxis?.rest}`
             </AccordionButton>
           </h2>
           <AccordionPanel pb={4}>
-            <Text whiteSpace={'pre-line'} align={'left'}>{result}</Text>
+            <Text whiteSpace={'pre-line'} align={'left'}>{resultTxt}</Text>
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem>
+          <h2>
+            <AccordionButton>
+              <Box as='span' flex='1' textAlign='left'>
+                Plan
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            <Plan plan={result} />
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
