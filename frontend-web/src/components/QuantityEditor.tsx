@@ -1,5 +1,4 @@
 import {
-    Box,
     Flex,
     NumberDecrementStepper,
     NumberIncrementStepper,
@@ -25,7 +24,7 @@ export default function QuantityEditor(props: Props) {
                 {props.before ?
                     <Text align={'right'}>{props.before}&nbsp;</Text> :
                     <></>}
-                <NumberInput
+                <NumberInput minWidth={25}
                     defaultValue={props.value}
                     min={props.min || 0}
                     max={props.max || 100}
