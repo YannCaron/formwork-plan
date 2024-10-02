@@ -32,7 +32,7 @@ class Context {
     }
 }
 
-class Result {
+export class Result {
 
     timespent: number
     numberOfIteration: number
