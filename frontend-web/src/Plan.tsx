@@ -16,8 +16,6 @@ function getColor(element: FormElement): string {
     return '#ff0000'
 }
 
-function draw() { }
-
 const Plan = (props: Props) => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null)
