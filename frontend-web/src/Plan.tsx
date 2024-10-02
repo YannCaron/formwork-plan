@@ -1,19 +1,18 @@
-import { Heading } from '@chakra-ui/react'
 import { CrossPiece, FormElement, PropBorder, PropInter } from '@cyann/plan-optimizer'
 import { Result } from '@cyann/plan-optimizer/dist/src/Optimizer'
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 
 type Props = { plan?: Result }
 
 function getColor(element: FormElement): string {
     if (element instanceof PropBorder) return '#333333'
     if (element instanceof PropInter) return '#444444'
-    if (element.size === 180) return '#00ffff'
-    if (element.size === 170) return '#ff0000'
-    if (element.size === 150) return '#00ff00'
-    if (element.size === 115) return '#0000aa'
-    if (element.size === 110) return '#000000'
-    if (element.size === 90) return '#ff9999'
+    if (element.size === 180) return '#59d1e2' // cyan
+    if (element.size === 170) return '#e27159' // red
+    if (element.size === 150) return '#59e278' // green
+    if (element.size === 115) return '#5976e2' // dask blue
+    if (element.size === 110) return '#4f4f4f' // black
+    if (element.size === 90) return '#e259cc' // pink
     return '#ff0000'
 }
 

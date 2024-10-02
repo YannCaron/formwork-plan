@@ -31,12 +31,12 @@ function App() {
     setResultTxt('calculation started')
 
     const primaries = {
-      p90: [90, p90],    // pink
-      p110: [110, p110], // black
-      p115: [115, p115], // dark blue
-      p150: [150, p150], // green
-      p170: [170, p170], // red and cyan
-      p180: [180, p180]  // cyan
+      p90: [90, p90],
+      p110: [110, p110],
+      p115: [115, p115],
+      p150: [150, p150],
+      p170: [170, p170],
+      p180: [180, p180]
     }
 
     const secondaries = {
